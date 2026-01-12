@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="CGDatabase.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1059"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title=".Browsables" custom_title="0" dock_id="1" table="0,10:Browsables"/><dock_state state="000000ff00000000fd0000000100000002000005bb00000398fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000000005bb0000011e00ffffff000002690000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">-- =========================
+-- USERS
+-- =========================
+CREATE TABLE IF NOT EXISTS User (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,   -- #Id
+    name TEXT NOT NULL,                      -- *Name
+    email TEXT NOT NULL UNIQUE,              -- *Email
+    password TEXT NOT NULL,                  -- *Password
+    phone TEXT,                              -- °Phone
+    role TEXT NOT NULL DEFAULT 'user',       -- *Role (user | admin | trainer)
+    availability TEXT,                       -- °Availability (trainer only)
+    location TEXT                            -- °Location
+);
+
+-- =========================
+-- GYM
+-- =========================
+CREATE TABLE IF NOT EXISTS Gym (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,    -- #Id
+    name TEXT NOT NULL,                      -- *Name
+    openingHours TEXT NOT NULL,              -- *OpeningHours
+    location TEXT NOT NULL,                  -- *Location
+    email TEXT,                              -- °Email
+    phone TEXT,                              -- °Phone
+    capacity INTEGER                         -- °Capacity
+);
+
+-- =========================
+-- MEMBERSHIP
+-- =========================
+CREATE TABLE IF NOT EXISTS Membership (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,    -- #Id
+    price REAL NOT NULL,                     -- *Price
+    type TEXT NOT NULL,                      -- *Type
+    location TEXT NOT NULL,                  -- *Location
+    gymId INTEGER NOT NULL,                  -- *GymId
+    FOREIGN KEY (gymId) REFERENCES Gym(id)
+);
+
+-- =========================
+-- USER MEMBERSHIP
+-- =========================
+CREATE TABLE IF NOT EXISTS UserMembership (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,    -- #Id
+    userId INTEGER NOT NULL,                 -- *UserId
+    membershipId INTEGER NOT NULL,           -- *MembershipId
+    startDate DATE NOT NULL,                 -- *StartDate
+    endDate DATE NOT NULL,                   -- *EndDate
+    status TEXT NOT NULL DEFAULT 'active',   -- *Status (active | expired | cancelled)
+    FOREIGN KEY (userId) REFERENCES User(id),
+    FOREIGN KEY (membershipId) REFERENCES Membership(id)
+);
+
+-- =========================
+-- APPOINTMENTS
+-- =========================
+CREATE TABLE IF NOT EXISTS Appointments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,    -- #Id
+    userId INTEGER NOT NULL,                 -- *UserId
+    date DATE NOT NULL,                      -- *Date
+    startTime TIME NOT NULL,                 -- *StartTime
+    endTime TIME NOT NULL,                   -- *EndTime
+    location TEXT NOT NULL,                  -- *Location
+    status TEXT NOT NULL DEFAULT 'booked',   -- *Status (booked | completed | cancelled)
+    FOREIGN KEY (userId) REFERENCES User(id)
+);
+
+-- =========================
+-- CANCELLATION
+-- =========================
+CREATE TABLE IF NOT EXISTS Cancellation (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,    -- #Id
+    appointmentId INTEGER NOT NULL,           -- *AppointmentId
+    reason TEXT NOT NULL,                     -- *Reason
+    cancelledAt DATETIME DEFAULT CURRENT_TIMESTAMP, -- *CancelledAt
+    FOREIGN KEY (appointmentId) REFERENCES Appointments(id)
+);</sql><current_tab id="0"/></tab_sql></sqlb_project>
