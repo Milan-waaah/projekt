@@ -1,0 +1,68 @@
+Üzleti Szabályok – Calen-Go projekt
+
+A Calen-Go rendszer célja, hogy a felhasználók különböző szolgáltatásokra (pl. személyi edző) időpontot foglalhassanak, míg az adminisztrátorok és szolgáltatók az időpontokat kezelni, módosítani és törölni tudják.
+A következő üzleti szabályok meghatározzák a rendszer működésének alapelveit.
+
+Felhasználóval (User) kapcsolatos üzleti szabályok
+Egy felhasználó csak regisztráció és sikeres bejelentkezés után foglalhat időpontot.
+
+Egy felhasználó egy adott időpontra csak egyszer foglalhat.
+
+A felhasználó kizárólag a saját időpontjait tekintheti meg.
+
+A felhasználó jogosult az általa lefoglalt időpontot lemondani a kezdési időpont előtt.
+
+Ha a felhasználó érvényes tagsággal (membership) rendelkezik, akkor jogosult a szolgáltatások igénybevételére.
+
+Lejárt vagy törölt tagsággal rendelkező felhasználó nem foglalhat új időpontot.
+
+
+Időpontokkal kapcsolatos üzleti szabályok
+
+Időpont csak a szolgáltató nyitvatartási idején belül hozható létre.
+
+Egy időpont kezdési és befejezési ideje nem fedheti át egy másik, már meglévő időpontot.
+
+Egy időpont státusza az alábbi lehet:
+•	booked
+•	completed
+•	cancelled
+
+Lemondott időpont nem módosítható.
+
+
+Lemondással (Cancellation) kapcsolatos üzleti szabályok
+
+Időpont lemondása esetén a rendszer kötelezően eltárolja a lemondás okát.
+
+Egy időponthoz legfeljebb egy lemondás tartozhat.
+
+A lemondás időpontját a rendszer automatikusan rögzíti.
+
+
+Tagsággal kapcsolatos üzleti szabályok
+
+Egy tagság egy adott helyszínhez (Gym) tartozik.
+
+Egy felhasználónak egy időben csak egy aktív tagsága lehet.
+
+A tagság státusza lehet:
+•	active
+•	expired
+•	cancelled
+
+A tagság érvényessége a kezdő- és végdátum alapján kerül meghatározásra.
+
+
+Adminisztrátorral kapcsolatos üzleti szabályok
+
+Az adminisztrátor jogosult bármely időpont létrehozására, módosítására és törlésére.
+
+Az adminisztrátor jogosult felhasználók szerepkörének módosítására.
+
+Az adminisztrátor jogosult szolgáltatások, edzők és helyszínek kezelésére.
+
+Az adminisztrátor hozzáfér az összes foglaláshoz és lemondáshoz.
+
+
+
