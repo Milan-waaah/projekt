@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="CalenGODB.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1059"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title=".Browsables" custom_title="0" dock_id="1" table="0,10:Browsables"/><dock_state state="000000ff00000000fd0000000100000002000005bb00000398fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000000005bb0000011e00ffffff000002690000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">PRAGMA foreign_keys = ON;
+
+-- =====================
+-- USER
+-- =====================
+CREATE TABLE User (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    phone TEXT,
+    role TEXT NOT NULL CHECK (role IN ('user', 'trainer', 'admin'))
+);
+
+-- =====================
+-- TRAINER
+-- =====================
+CREATE TABLE Trainer (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    userId INTEGER NOT NULL,
+    availability TEXT NOT NULL,
+    location TEXT,
+    FOREIGN KEY (userId) REFERENCES User(id)
+);
+
+-- =====================
+-- GYM
+-- =====================
+CREATE TABLE Gym (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    openingHours TEXT NOT NULL,
+    location TEXT NOT NULL,
+    email TEXT,
+    phone TEXT,
+    capacity INTEGER NOT NULL
+);
+
+-- =====================
+-- MEMBERSHIP
+-- =====================
+CREATE TABLE Membership (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    price INTEGER NOT NULL,
+    type TEXT NOT NULL,
+    location TEXT NOT NULL
+);
+
+-- =====================
+-- USER MEMBERSHIP
+-- =====================
+CREATE TABLE UserMembership (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    userId INTEGER NOT NULL,
+    membershipId INTEGER NOT NULL,
+    startDate DATE NOT NULL,
+    endDate DATE NOT NULL,
+    status TEXT NOT NULL CHECK (status IN ('active', 'expired', 'cancelled')),
+    FOREIGN KEY (userId) REFERENCES User(id),
+    FOREIGN KEY (membershipId) REFERENCES Membership(id)
+);
+
+-- =====================
+-- APPOINTMENTS
+-- =====================
+CREATE TABLE Appointments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    userId INTEGER NOT NULL,
+    trainerId INTEGER NOT NULL,
+    gymId INTEGER NOT NULL,
+    date DATE NOT NULL,
+    startTime TIME NOT NULL,
+    endTime TIME NOT NULL,
+    location TEXT NOT NULL,
+    status TEXT NOT NULL CHECK (status IN ('open', 'booked', 'cancelled')),
+    reason TEXT,
+    cancelledAt DATETIME,
+    FOREIGN KEY (userId) REFERENCES User(id),
+    FOREIGN KEY (trainerId) REFERENCES Trainer(id),
+    FOREIGN KEY (gymId) REFERENCES Gym(id)
+);</sql><current_tab id="0"/></tab_sql></sqlb_project>
